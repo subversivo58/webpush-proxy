@@ -1,0 +1,7 @@
+
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "webpush-proxy",
+  "main": "ClaudflareWorkersWebpush.js",
+  "compatibility_date": "2026-11-09"
+}
