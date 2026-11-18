@@ -9,6 +9,7 @@ const ALLOWED_HOSTS = [
   "updates.push.services.mozilla.com",
   "push.services.mozilla.com",
   "web.push.apple.com",
+  "github.com"
 ];
 
 const MAX_BODY = 4096; // limite prático do webpush (4KB)
@@ -70,6 +71,7 @@ export default {
       "authorization", // VAPID
       "content-encoding", // aes128gcm / aesgcm
       "content-type",
+      "accept", 
       "ttl",
       "urgency",
       "topic",
