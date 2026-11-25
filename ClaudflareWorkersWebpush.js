@@ -354,7 +354,8 @@ async function handleJWTCreate(request, env) {
       sub: JWT_SUBJECT,
       aud,
       iat,
-      exp
+      exp,
+      jti: crypto.randomUUID()
     };
 
     // 8) Assina JWT
@@ -468,7 +469,9 @@ async function handleJWTRefresh(request, env) {
       typeof payload.iat !== "number" ||
       !Number.isFinite(payload.iat) ||
       typeof payload.exp !== "number" ||
-      !Number.isFinite(payload.exp)
+      !Number.isFinite(payload.exp) ||
+      typeof payload.jti !== "string" ||
+      !payload.jti
     ) {
       throw new Error("Claims do JWT inválidos.");
     }
@@ -525,7 +528,8 @@ async function handleJWTRefresh(request, env) {
       sub: payload.sub,
       aud: payload.aud,
       iat: nowSeconds,
-      exp: nowSeconds + 60
+      exp: nowSeconds + 60,
+      jti: crypto.randomUUID()
     };
 
     // Assina com a chave privada do Worker
@@ -578,7 +582,8 @@ async function handleJWTRefresh(request, env) {
       sub: payload.sub,
       aud: payload.aud,
       iat: newIat,
-      exp: newExp
+      exp: newExp,
+      jti: crypto.randomUUID()
     };
 
     const newToken = await jwt.sign({
@@ -650,7 +655,9 @@ async function verifyOriginalTokenSignature({
     typeof payload.iat !== "number" ||
     !Number.isFinite(payload.iat) ||
     typeof payload.exp !== "number" ||
-    !Number.isFinite(payload.exp)
+    !Number.isFinite(payload.exp) ||
+    typeof payload.jti !== "string" ||
+    !payload.jti
   ) {
     throw new Error("Claims do JWT inválidos.");
   }
