@@ -1,4 +1,3 @@
-
 /**
  * Web Push Proxy - Cloudflare Worker
  * @license The MIT License (MIT) - [https://github.com/subversivo58/subversivo58.github.io/blob/main/LICENSE]
@@ -28,7 +27,7 @@ const JWT_ISSUER = "Blog Subversivo58";
 const JWT_SUBJECT = "https://subversivo58.github.io";
 const JWT_DEFAULT_DURATION = "8h";
 
-const JWT_KID_PATTERN = /^K_[a-f0-9]{32}$/i;
+const JWT_KID_PATTERN = /^[a-f0-9]{32}$/i;
 
 // ============================================================
 // HANDLER PRINCIPAL
@@ -312,7 +311,7 @@ async function handleJWTCreate(request, env) {
     }
 
     // 4) Recupera a chave privada
-    const privatePEM = env[kid];
+    const privatePEM = env[`K_${kid}`];
 
     if (
       typeof privatePEM !== "string" ||
@@ -487,7 +486,7 @@ async function handleJWTRefresh(request, env) {
     }
 
     // 8) Recupera chave privada pelo kid
-    const privatePEM = env[header.kid];
+    const privatePEM = env[`K_${header.kid}`];
 
     if (
       typeof privatePEM !== "string" ||
